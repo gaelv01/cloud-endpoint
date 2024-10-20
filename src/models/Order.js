@@ -16,7 +16,7 @@ export const Order = sequelize.define(
     },
 
     cost: {
-      type: DataTypes.NUMBER,
+      type: DataTypes.DECIMAL(6, 2),
       isNumeric: true,
       allowNull: false,
     },
@@ -47,7 +47,6 @@ export const Order = sequelize.define(
 );
 
 // Define the relationship between Order and Sell
-
 Order.hasMany(Sell, {
   foreignKey: "order_id",
   sourceKey: "id",
@@ -59,37 +58,34 @@ Sell.belongsTo(Order, {
 });
 
 // Define the relationship between Order and PaymentMethod
-
-Order.hasOne(PaymentMethod, {
-  foreignKey: "id",
-  sourceKey: "payment_method_id",
+Order.belongsTo(PaymentMethod, {
+  foreignKey: "payment_method_id",
+  targetKey: "id",
 });
 
-PaymentMethod.belongsTo(Order, {
-  foreignKey: "id",
-  sourceKey: "payment_method_id",
+PaymentMethod.hasMany(Order, {
+  foreignKey: "payment_method_id",
+  sourceKey: "id",
 });
 
 // Define the relationship between Order and SaleFunnel
-
-Order.hasOne(SaleFunnel, {
-  foreignKey: "id",
-  sourceKey: "sales_funnel_id",
+Order.belongsTo(SaleFunnel, {
+  foreignKey: "sales_funnel_id",
+  targetKey: "id",
 });
 
-SaleFunnel.belongsTo(Order, {
-  foreignKey: "id",
-  sourceKey: "sales_funnel_id",
+SaleFunnel.hasMany(Order, {
+  foreignKey: "sales_funnel_id",
+  sourceKey: "id",
 });
 
 // Define the relationship between Order and Address
-
-Order.hasOne(Address, {
-  foreignKey: "id",
-  sourceKey: "address_id",
+Order.belongsTo(Address, {
+  foreignKey: "address_id",
+  targetKey: "id",
 });
 
-Address.belongsTo(Order, {
-  foreignKey: "id",
-  sourceKey: "address_id",
+Address.hasMany(Order, {
+  foreignKey: "address_id",
+  sourceKey: "id",
 });
